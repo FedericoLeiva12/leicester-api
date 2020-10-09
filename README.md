@@ -13,3 +13,13 @@ Cuenta con una API Rest con diferentes endpoint que pueden devolver la siguiente
 
   - Añadir JWT para que solo las personas autorizadas puedan utilizar la API.
   - Añadir una ruta que permita añadir manualmente un partido.
+
+#### Configuración
+  - Crear una base de datos MongoDB y guardar los datos de acceso.
+  - Crear un archivo llamado `.env` y dentro agregar las siguientes variables:
+```
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+DB_HOST=
+```

@@ -34,3 +34,5 @@ DB_PASSWORD=
 DB_NAME=
 DB_HOST=
 ```
+  - Instala todas las dependencias con el comando `npm install`
+  - Inicia el servidor con el comando `npm install`

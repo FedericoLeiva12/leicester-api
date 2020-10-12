@@ -142,4 +142,68 @@ gameRoute.get('/date/:from/:to', (req, res, next) => {
 		})
 });
 
+/*    ______
+ *   /      \
+ *   |      |
+ *   |______/ __   ___ _____
+ *   |       /  \ /      |
+ *   |       |  | \--\   |
+ *  _|_      \__/ ___/   |
+ */
+
+ gameRoute.post('/add', (req, res) => {
+ 	// Parametros
+ 	let params = {date: false, teamOne: false, teamTwo: false, stadium: false};
+
+ 	let newGame = {totalGoals: 0};
+
+ 	let body = Object.entries(req.body);
+
+ 	for(let [key, value] of body) {
+ 		switch(key) {
+ 			case 'date':
+ 				newGame.date = dateUtils.dateFromString(value);
+ 				params.date = true;
+ 				break;
+ 			case 'teamOne':
+ 				newGame.teamOne = value;
+ 				newGame.totalGoals += value.goals;
+ 				params.teamOne = true;
+ 				break;
+ 			case 'teamTwo':
+ 				newGame.teamTwo = value;
+ 				newGame.totalGoals += value.goals;
+ 				params.teamTwo = true;
+ 				break;
+ 			case 'stadium':
+ 				newGame.stadium = value;
+ 				params.stadium = true;
+ 				break;
+ 			default: // Si se envio un dato invalido
+ 				return res.status(400).send({ errorMessage: 'Invalid data.' });
+ 		}
+ 	}
+
+ 	// Checkear si falto algun dato
+ 	let test = Object.values(params);
+
+ 	for(let val of test) {
+ 		if(!val) return res.status(400).send({ errorMessage: 'Invalid data.' });
+ 	}
+
+ 	let newGamemod = new Game(newGame);
+
+ 	newGamemod.save().then(() => {
+ 		res.send({ message: 'New game created', game: {
+				id: newGamemod.id,
+				teamOne: newGamemod.teamOne,
+				teamTwo: newGamemod.teamTwo,
+				totalGoals: newGamemod.goals,
+				stadium: newGamemod.stadium,
+				date: dateUtils.formatDate(newGamemod.date)
+			}
+		});
+ 	});
+ })
+
 module.exports = gameRoute;

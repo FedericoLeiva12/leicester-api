@@ -1,4 +1,4 @@
-const { cleanScreen } = require('./console');
+const { cleanScreen, showProgressBar } = require('./console');
 const lcfc = require('../services/lcfc');
 const Game = require('../models/game');
 
@@ -32,7 +32,7 @@ module.exports = function updateGames(callback) {
 							cleanScreen();
 
 							// Mostrar porcentaje
-							process.stdout.write('[' + (new Array(Math.floor(100/total*current)).fill('=')).join('') + (new Array((100 - Math.floor(100/total*current))).fill(' ')).join('') + "] " + Math.floor(100/total*current) + "%");
+							showProgressBar(total, current, 50, 'Getting games from web')
 
 							// Buscar el juego para ver si ya esta cargado en la base de datos
 							Game.findOne({ id: game.id }).exec((err, doc) => {
@@ -47,16 +47,10 @@ module.exports = function updateGames(callback) {
 										const newGame = new Game(game);
 										// Limpiar la pantalla
 										cleanScreen();
-										promisesTwo.push(newGame.save().then(() => process.stdout.write('[' + (new Array(Math.floor(100/total*current)).fill('=')).join('') + (new Array((100 - Math.floor(100/total*current))).fill(' ')).join('') + "] " + Math.floor(100/total*current) + "%")));
+										promisesTwo.push(newGame.save().then(() => showProgressBar(total, current, 50, 'Uploading to database')));
 										res()
 									} else { // Si ya estaba cargado simplemente aumentar el porcentaje
-										// Limpiar la pantalla
-										cleanScreen();
-										process.stdout.write('[');
-										process.stdout.write((new Array(Math.floor(100/total*current)).fill('=')).join(''));
-										process.stdout.write((new Array((100 - Math.floor(100/total*current))).fill(' ')).join(''));
-										process.stdout.write('] ');
-										process.stdout.write(Math.floor(100/total*current) + '%');
+										showProgressBar(total, current, 50, 'Uploading to database')
 										res();
 									}
 								}

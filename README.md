@@ -23,7 +23,6 @@ Cuenta con una API Rest con diferentes endpoint que pueden devolver la siguiente
   "stadium": "Un estadio bonito"
 }
   ```
-}
 
 #### Configuración
   - Crear una base de datos MongoDB y guardar los datos de acceso.

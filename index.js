@@ -15,6 +15,8 @@ db(err => {
 			// Loggeo el puerto en el que el servidor se inicio
 			console.log(`Listening on ${listener.address().port}`)
 		))
-	} else // Si hubo un error
+	} else { // Si hubo un error
+		console.error(err)
 		console.error(new Error('Error al conectar a la base de datos.'));
+	}
 });

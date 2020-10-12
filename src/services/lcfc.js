@@ -49,7 +49,6 @@ function getAllGames() {
 
 					result.on('data', data => {
 						response += data.toString();
-						process.stdout.write('.')
 					});
 
 					result.on('end', () => {
